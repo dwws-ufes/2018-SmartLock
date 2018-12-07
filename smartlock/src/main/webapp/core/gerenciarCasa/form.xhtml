@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:adm="http://github.com/adminfaces"
+    template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">
+		<h:outputText value="#{msgsCore['gerenciarCasa.title.create']}"
+			rendered="#{(! gerenciarCasaController.readOnly) and (gerenciarCasaController.selectedEntity.id == null)}" />
+		<h:outputText value="#{msgsCore['gerenciarCasa.title.update']}"
+			rendered="#{(! gerenciarCasaController.readOnly) and (gerenciarCasaController.selectedEntity.id != null)}" />
+		<h:outputText value="#{msgsCore['gerenciarCasa.title.retrieve']}" rendered="#{gerenciarCasaController.readOnly}" />
+	</ui:define>
+	
+	<ui:define name="description">
+		<h:outputText value="#{msgsCore['gerenciarCasa.title.create.description']}"
+			rendered="#{(! gerenciarCasaController.readOnly) and (gerenciarCasaController.selectedEntity.id == null)}" />
+		<h:outputText value="#{msgsCore['gerenciarCasa.title.update.description']}"
+			rendered="#{(! gerenciarCasaController.readOnly) and (gerenciarCasaController.selectedEntity.id != null)}" />
+		<h:outputText value="#{msgsCore['gerenciarCasa.title.retrieve.description']}" rendered="#{gerenciarCasaController.readOnly}" />
+	</ui:define>
+	
+	<ui:define name="body">
+		<h:form id="entitiesForm">
+			<p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" layout="grid" styleClass="ui-panelgrid-blank">
+				<p:outputLabel for="enderecoField" value="#{msgsCore['gerenciarCasa.field.endereco']}" />
+				<p:inputText id="enderecoField" value="#{gerenciarCasaController.selectedEntity.endereco}" style="width: 100%;" />
+				
+				<p:outputLabel for="estadoField" value="#{msgsCore['gerenciarCasa.field.estado']}" />
+				<p:selectOneMenu id="estadoField"
+						value="#{gerenciarCasaController.selectedEntity.estado}">
+						<f:selectItem itemLabel="Selecionar Estado" itemValue="" />
+						<f:selectItems value="#{gerenciarCasaController.listaEstados}" />
+						<f:ajax listener="#{gerenciarCasaController.filtrarCidades}"
+						render="cidadeField" />
+				 </p:selectOneMenu>
+				 
+				<p:outputLabel for="cidadeField" value="#{msgsCore['gerenciarCasa.field.cidade']} " />
+				<p:selectOneMenu id="cidadeField"
+						value="#{gerenciarCasaController.selectedEntity.cidade}">
+						<f:selectItem itemLabel="Selecionar Cidade" itemValue="" />
+						<f:selectItems value="#{gerenciarCasaController.listaCidades}" />
+				 </p:selectOneMenu>
+				 
+				<p:outputLabel for="paisField" value="#{msgsCore['gerenciarCasa.field.pais']}" />
+				<p:inputText id="paisField" value="#{gerenciarCasaController.selectedEntity.pais}" style="width: 100%;" />
+				<p:outputLabel for="numPortasField" value="#{msgsCore['gerenciarCasa.field.numPortas']}" />
+				<p:inputText id="numPortasField" value="#{gerenciarCasaController.selectedEntity.numPortas}" style="width: 100%;" />
+			</p:panelGrid>
+			<p:commandButton id="cancelButton" value="#{msgs['jbutler.crud.button.cancel']}" icon="fa fa-close"
+				action="#{gerenciarCasaController.list}" immediate="true" rendered="#{! gerenciarCasaController.readOnly}" />
+			<p:commandButton id="saveButton" value="#{msgs['jbutler.crud.button.save']}" icon="fa fa-save" action="#{gerenciarCasaController.save}"
+				rendered="#{! gerenciarCasaController.readOnly}" />
+			<p:defaultCommand target="saveButton" />
+			<p:commandButton id="backButton" value="#{msgs['jbutler.crud.button.back']}" icon="fa fa-arrow-circle-left"
+				action="#{gerenciarCasaController.list}" immediate="true" rendered="#{gerenciarCasaController.readOnly}" />
+			
+		</h:form>
+	</ui:define>
+</ui:composition>

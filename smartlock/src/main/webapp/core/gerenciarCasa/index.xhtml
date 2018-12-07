@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:adm="http://github.com/adminfaces"
+    template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">
+		<h:outputText value="#{msgsCore['gerenciarCasa.title']}" />
+	</ui:define>
+
+	<ui:define name="description">
+		<h:outputText value="#{msgsCore['gerenciarCasa.title.description']}" />
+	</ui:define>
+	
+	<ui:define name="body">
+		<adm:breadcrumb link="/core/gerenciarCasa/index" title="#{msgsCore['gerenciarCasa.title']}" />
+		<h:form id="listingForm">
+			<p:dataTable id="entitiesDataTable" var="entity" value="#{gerenciarCasaController.lazyEntities}"
+				selection="#{gerenciarCasaController.selectedEntity}" selectionMode="single" paginator="true"
+				rows="#{gerenciarCasaController.maxDataTableRowsPerPage}"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="#{gerenciarCasaController.halfMaxDataTableRowsPerPage},#{gerenciarCasaController.maxDataTableRowsPerPage},#{gerenciarCasaController.doubleMaxDataTableRowsPerPage}"
+				lazy="true" paginatorPosition="bottom" emptyMessage="#{msgsCore['gerenciarCasa.text.noEntities']}">
+				<p:ajax event="rowSelect" update="buttonsGroup" />
+				<p:ajax event="rowUnselect" update="buttonsGroup" />
+				<f:facet name="header">
+					<h:outputText value="#{msgsCore['gerenciarCasa.text.entities']}" />
+				</f:facet>
+				<p:column headerText="#{msgsCore['gerenciarCasa.field.casaId']}">
+					<h:outputText value="#{entity.casaId}" />
+				</p:column>
+				<p:column headerText="#{msgsCore['gerenciarCasa.field.cidade']}">
+					<h:outputText value="#{entity.cidade}" />
+				</p:column>
+				<p:column headerText="#{msgsCore['gerenciarCasa.field.endereco']}">
+					<h:outputText value="#{entity.endereco}" />
+				</p:column>
+				<p:column headerText="#{msgsCore['gerenciarCasa.field.numPortas']}">
+					<h:outputText value="#{entity.numPortas}"/>
+					
+				</p:column>
+				<f:facet name="footer">
+					<h:panelGroup id="buttonsGroup">
+						<p:commandButton action="#{gerenciarCasaController.create}" icon="fa fa-plus" value="#{msgs['jbutler.crud.button.create']}" />
+						<p:commandButton action="#{gerenciarCasaController.retrieve}" icon="fa fa-search" value="#{msgs['jbutler.crud.button.retrieve']}"
+							disabled="#{gerenciarCasaController.selectedEntity == null}" />
+						<p:commandButton action="#{gerenciarCasaController.update}" icon="fa fa-edit" value="#{msgs['jbutler.crud.button.update']}"
+							disabled="#{gerenciarCasaController.selectedEntity == null}" />
+						<p:commandButton action="#{gerenciarCasaController.trash}" icon="fa fa-trash" value="#{msgs['jbutler.crud.button.delete']}"
+							disabled="#{gerenciarCasaController.selectedEntity == null}" update=":listingForm:trashGroup" />
+					</h:panelGroup>
+				</f:facet>
+			</p:dataTable>
+			<h:panelGroup id="trashGroup">
+				<hr />
+				<p:panel id="trashPanel" header="#{msgs['jbutler.crud.text.trashHeader']}" toggleable="true" toggleSpeed="500"
+					rendered="#{not empty gerenciarCasaController.trashCan}">
+					<p:dataTable id="trashDataTable" var="entity" value="#{gerenciarCasaController.trashCan}">
+						<p:column headerText="#{msgsCore['gerenciarCasa.field.cidade']}">
+							<h:outputText value="#{entity.cidade}" />
+						</p:column>
+						<p:column headerText="#{msgsCore['gerenciarCasa.field.endereco']}">
+							<h:outputText value="#{entity.endereco}" />
+						</p:column>
+						<p:column headerText="#{msgsCore['gerenciarCasa.field.numPortas']}">
+							<h:outputText value="#{entity.numPortas}"/>
+						
+						</p:column>
+						<f:facet name="footer">
+							<p:commandButton action="#{gerenciarCasaController.cancelDeletion}" value="#{msgs['jbutler.crud.button.cancelDeletion']}"
+								icon="fa fa-fw fa-close" process="@this" update=":listingForm" />
+							<p:commandButton action="#{gerenciarCasaController.delete}" value="#{msgs['jbutler.crud.button.confirmDeletion']}"
+								icon="fa fa-fw fa-trash-o" process="@this" update=":listingForm" />
+						</f:facet>
+					</p:dataTable>
+				</p:panel>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+</ui:composition>

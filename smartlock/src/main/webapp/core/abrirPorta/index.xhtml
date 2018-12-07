@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:adm="http://github.com/adminfaces"
+    template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">
+		<h:outputText value="#{msgsCore['abrirPorta.title']}" />
+	</ui:define>
+
+	<ui:define name="description">
+		<h:outputText value="#{msgsCore['abrirPorta.title.description']}" />
+	</ui:define>
+	
+	<ui:define name="body">
+		<adm:breadcrumb link="/core/abrirPorta/index" title="#{msgsCore['abrirPorta.title']}" />
+		<h:form id="updateForm">
+			<h:panelGrid columns="1">
+				<p:panel>
+					<p:outputLabel for="casaField" value="Casa : " />
+			        <p:selectOneMenu id="casaField" value="#{abrirPortaController.casaSelecionada}"
+			        converter="omnifaces.SelectItemsConverter" dynamic="true">
+			            <f:selectItem itemLabel="Selecionar casa" itemValue="" />
+			            <f:selectItems value="#{abrirPortaController.casas}" />
+			            <f:ajax listener="#{abrirPortaController.filtrarCasa}"
+						render="portasCarousel" />
+			            
+			        </p:selectOneMenu>
+				</p:panel>		
+			</h:panelGrid>
+			
+			<p:carousel id="portasCarousel" value="#{abrirPortaController.portas}"
+				headerText="#{msgsCore['abrirPorta.title']}" var="door"
+				itemStyle="text-align:left" responsive="true">
+				<p:panelGrid columns="2" style="width:100%;margin:10px 0px"
+					columnClasses="label,value" layout="grid"
+					styleClass="ui-panelgrid-blank">
+
+					<h:outputText value="ID" style="color:#333;" />
+					<h:outputText value="#{door.idPorta}" />
+					
+					<h:outputText value="Status" style="color:#333;" />
+					<h:outputText value="#{door}" />
+
+					<p:commandButton icon="fa fa-lock" value="Abrir/Fechar"
+						process="@form" update=":updateForm:openDoorSection">
+						<f:setPropertyActionListener value="#{door}"
+							target="#{abrirPortaController.portaSelecionada}" />
+					</p:commandButton>
+
+					
+				</p:panelGrid>
+
+				<f:facet name="footer">
+					<h:outputText
+						value="#{abrirPortaController.portas.size()} portas encontradas" />
+				</f:facet>
+			</p:carousel>	
+			
+			<p:panel id="openDoorSection" header="You are about to open: #{abrirPortaController.portaSelecionada.idPorta}"
+				style="margin:20px 0">
+				<h:panelGrid columns="2" cellpadding="10" rendered="#{abrirPortaController.portaSelecionada != null}">
+					<h:outputText value="Status:"/>
+					<h:outputText value="#{abrirPortaController.portaSelecionada}"/>					
+					
+					<p:commandButton icon="fa fa-check" value="Abrir/Fechar"
+						action="#{abrirPortaController.abrirPorta}" update=":updateForm:portasCarousel"/>
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

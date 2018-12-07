@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui" template="/admin.xhtml">
+
+    <ui:define name="head">
+        <title>SmartLock Home Security</title>
+    </ui:define>
+
+    <ui:define name="logo-lg">
+        SmartLock
+    </ui:define>
+
+    <ui:define name="logo-mini">
+        SL
+    </ui:define>
+
+    <ui:define name="menu">
+        <ul class="sidebar-menu">
+            <li><p:link outcome="/index" onclick="clearBreadCrumbs()">
+                    <i class="fa fa-home"></i>
+                    <span><h:outputText value="#{msgs['menu.home']}" /></span>
+                </p:link></li>
+			<li class="header"><h:outputText value="#{msgsCore['core.menu.admin']}" /></li>
+			<li><p:link outcome="/core/gerenciarPessoa/index" onclick="clearBreadCrumbs()">
+					<i class="fa fa-angle-double-right"></i>
+					<span><h:outputText value="#{msgsCore['core.menu.admin.gerenciarPessoa']}" /></span>
+				</p:link></li>
+			<li><p:link outcome="/core/gerenciarCasa/index" onclick="clearBreadCrumbs()">
+					<i class="fa fa-angle-double-right"></i>
+					<span><h:outputText value="#{msgsCore['core.menu.admin.gerenciarCasa']}" /></span>
+				</p:link></li>
+			<li><p:link outcome="/core/abrirPorta/index" onclick="clearBreadCrumbs()">
+					<i class="fa fa-angle-double-right"></i>
+					<span><h:outputText value="#{msgsCore['core.menu.admin.abrirPorta']}" /></span>
+				</p:link></li>	
+							
+        </ul>
+    </ui:define>
+
+    <ui:define name="top-menu">
+
+    </ui:define>
+
+    <ui:define name="footer">
+	    <h:outputText value="#{msgs['text.developedBy']} " /><a href="https://github.com/mcoutinho88">Matheus Coutinho</a>
+	    <h:outputText value=" #{msgs['text.and']} " /><a href="https://github.com/DayanneAyres">Dayanne Ayres</a>
+		<h:outputText value=" #{msgs['text.for']} " /><a href="https://www.inf.ufes.br/~vitorsouza/teaching/dwws-20182/">Desenvolvimento
+Web e Web Semântica – 2018/2</a>
+		<div class="pull-right hidden-xs" style="color: gray"><i>1.0.0</i></div>
+	</ui:define>
+	
+</ui:composition>
